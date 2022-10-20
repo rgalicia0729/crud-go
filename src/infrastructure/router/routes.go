@@ -6,5 +6,7 @@ import (
 )
 
 func InitRoutes(r *gin.Engine) {
+	r.GET("/api/employees", handler.FindAllEmployees)
 	r.POST("/api/employees", handler.CreateEmployee)
+	r.PUT("/api/employees/:employeeId", handler.UpdateEmployee)
 }

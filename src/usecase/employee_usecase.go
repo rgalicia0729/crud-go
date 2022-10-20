@@ -16,6 +16,10 @@ func NewEmployee(employeeRepository repository.Employee) *Employee {
 	}
 }
 
+func (e *Employee) FindAllEmployees() ([]*entity.Employee, error) {
+	return e.employeeRepository.FindAllEmployees()
+}
+
 func (e *Employee) CreateEmployee(values *values.Employee) (*entity.Employee, error) {
 	employeeEntity := entity.NewEmployee()
 	employeeEntity.FirstName = values.FirstName
@@ -23,4 +27,14 @@ func (e *Employee) CreateEmployee(values *values.Employee) (*entity.Employee, er
 	employeeEntity.Email = values.Email
 
 	return e.employeeRepository.CreateEmployee(employeeEntity)
+}
+
+func (e *Employee) UpdateEmployee(values *values.Employee) (*entity.Employee, error) {
+	employeeEntity := entity.NewEmployee()
+	employeeEntity.Id = values.Id
+	employeeEntity.FirstName = values.FirstName
+	employeeEntity.LastName = values.LastName
+	employeeEntity.Email = values.Email
+
+	return e.employeeRepository.UpdateEmployee(employeeEntity)
 }
