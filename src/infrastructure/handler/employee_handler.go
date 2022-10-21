@@ -28,6 +28,35 @@ func FindAllEmployees(c *gin.Context) {
 	})
 }
 
+func FindEmployeeById(c *gin.Context) {
+	employeeId, err := strconv.Atoi(c.Param("employeeId"))
+	if err != nil {
+		log.Println(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
+	}
+
+	employeeRepository := repository.NewEmployee()
+	employeeUseCase := usecase.NewEmployee(employeeRepository)
+
+	employeeResult, err := employeeUseCase.FindEmployeeById(employeeId)
+	if err != nil {
+		log.Println(err)
+
+		if errors.Is(err, errormessages.ErrEmployeeNotFound) {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"employee": employeeResult,
+	})
+}
+
 func CreateEmployee(c *gin.Context) {
 	type RequestBody struct {
 		FirstName string `json:"firstName" binding:"required"`
@@ -109,5 +138,34 @@ func UpdateEmployee(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{
 		"employee": employeeResult,
+	})
+}
+
+func DeleteEmployee(c *gin.Context) {
+	employeeId, err := strconv.Atoi(c.Param("employeeId"))
+	if err != nil {
+		log.Println(err)
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
+	}
+
+	employeeRepository := repository.NewEmployee()
+	employeeUseCase := usecase.NewEmployee(employeeRepository)
+
+	if err = employeeUseCase.DeleteEmployee(employeeId); err != nil {
+		log.Println(err)
+
+		if errors.Is(err, errormessages.ErrEmployeeNotFound) {
+			c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+		}
+
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Internal Server Error"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"deleted":    "Ok",
+		"employeeId": employeeId,
 	})
 }

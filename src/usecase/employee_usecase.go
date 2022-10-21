@@ -20,6 +20,10 @@ func (e *Employee) FindAllEmployees() ([]*entity.Employee, error) {
 	return e.employeeRepository.FindAllEmployees()
 }
 
+func (e *Employee) FindEmployeeById(employeeId int) (*entity.Employee, error) {
+	return e.employeeRepository.FindEmployeeById(employeeId)
+}
+
 func (e *Employee) CreateEmployee(values *values.Employee) (*entity.Employee, error) {
 	employeeEntity := entity.NewEmployee()
 	employeeEntity.FirstName = values.FirstName
@@ -37,4 +41,8 @@ func (e *Employee) UpdateEmployee(values *values.Employee) (*entity.Employee, er
 	employeeEntity.Email = values.Email
 
 	return e.employeeRepository.UpdateEmployee(employeeEntity)
+}
+
+func (e *Employee) DeleteEmployee(employeeId int) error {
+	return e.employeeRepository.DeleteEmployee(employeeId)
 }
