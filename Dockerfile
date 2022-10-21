@@ -4,7 +4,7 @@ RUN go env -w GOPROXY=direct
 RUN apk add --no-cache git
 RUN apk --no-cache add ca-certificates && update-ca-certificates
 
-WORKDIR /app
+WORKDIR /src
 
 COPY ./go.mod ./
 COPY ./go.sum ./
@@ -23,8 +23,6 @@ COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 
 COPY --from=build /app /app
 
-COPY .env ./
-
-EXPOSE 8080
+EXPOSE 8000
 
 ENTRYPOINT [ "/app" ]

@@ -1,5 +1,6 @@
 sql/
 .dockerignore
+.env
 .gitignore
 Dockerfile
 LICENSE

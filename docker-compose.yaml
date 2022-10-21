@@ -1,0 +1,24 @@
+version: '3.1'
+
+services:
+
+  db:
+    container_name: postgres
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - 5432:5432
+
+  app:
+    container_name: crud-go
+    image: rgalicia0729/crud-go
+    restart: always
+    environment:
+      - POSTGRES_URI=postgres://postgres:postgres@db:5432/test?sslmode=disable
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
