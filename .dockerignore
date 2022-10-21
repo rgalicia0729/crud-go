@@ -1,0 +1,6 @@
+sql/
+.dockerignore
+.gitignore
+Dockerfile
+LICENSE
+README.md
